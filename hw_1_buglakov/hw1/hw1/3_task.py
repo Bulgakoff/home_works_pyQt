@@ -45,5 +45,15 @@ def host_range_ping(ip_addresses):
     return result
 
 # Табличное представление списка словарей
-dict_ip = host_range_ping(create_lst_ip(7))
-print(tabulate([dict_ip], headers="keys", tablefmt="grid"))
+def tabl_ping(res):
+    columns = ["адрес", "доступ"]
+    # table = tabulate(host_range_ping(create_lst_ip(4)).items(), headers=columns, tablefmt='grid')
+    tables_DICT = {
+        (k, "Доступен" if v else "Не доступен") for k, v in res.items()
+    }
+
+    return tabulate(tables_DICT, headers=columns, tablefmt='grid')
+
+print(tabl_ping(host_range_ping(create_lst_ip(4))))
+
+
