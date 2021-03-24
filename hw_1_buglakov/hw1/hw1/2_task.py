@@ -11,7 +11,9 @@ subnet = ipaddress.ip_network("80.0.1.0/28")
 # Просмотр всех хостов для объекта-сети
 # print("hosts", list(subnet.hosts()), len(list(subnet.hosts())))
 def host_ping(ip_address):
-    with subprocess.Popen(["ping", "-c1", str(ip_address)]) as result:
+    with subprocess.Popen(["ping", "-n1", "1", str(ip_address)],
+                          stdout=subprocess.DEVNULL,
+                          stderr=subprocess.DEVNULL) as result:
         if result:
             print(ip_address, "Узел недоступен")
         else:
@@ -20,7 +22,7 @@ def host_ping(ip_address):
 
 def host_range_ping(ip_addresses):
     for ip in ip_addresses:
-        host_ping(ip)
+        host_ping(ip_addresses)
 
 
 ip_addres = list(subnet.hosts())
