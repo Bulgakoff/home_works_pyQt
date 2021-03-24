@@ -1,5 +1,7 @@
 import ipaddress
 import subprocess
+from pprint import pprint
+
 from tabulate import tabulate
 
 """3. Написать функцию host_range_ping_tab(), возможности которой основаны на функции из примера 2.
@@ -13,28 +15,35 @@ Unreachable
 10.0.0.4
 """
 
-subnet = ipaddress.ip_network("80.0.1.0/28")
+
+def create_lst_ip(num):
+    ip_address = []
+    for n in range(num):
+        # ip = f'192.168.0.{n}/24'
+        ip = format(ipaddress.ip_address(f"192.168.1.{n}"))  # так не получается
+        ip_address.append(ip)
+    return ip_address
+
+
+print(create_lst_ip(5))
 
 
 def host_ping(ip_address):
-    tuples_list_ip = []
-    with subprocess.Popen(["ping", "-c1", str(ip_address)]) as result:
-        if result:
-            tuples_list_ip.append((ip_address, "Узел недоступен"))
-        else:
-            tuples_list_ip.append((ip_address, "Узел недоступен"))
-    return tuples_list_ip
+    return subprocess.call(["ping", "/n", "1", ip_address],
+                           stdout=subprocess.DEVNULL,
+                           stderr=subprocess.DEVNULL) == 0
 
 
-def host_range_ping_tab(ip_addresses):
-    tuples_list_last = []
+ip = format(ipaddress.ip_address("192.168.1.1"))
+print(host_ping('google.com'))
+
+
+def host_range_ping(ip_addresses):
+    result = {}
     for ip in ip_addresses:
-        tuples_list_last += host_ping(ip)
-    return tuples_list_last
+        result[ip] = host_ping(ip)
+    return result
 
-
-ip_addres = list(subnet.hosts())
-columns = ["HOST", "status"]
-tuples_list = host_range_ping_tab(ip_addres)
-table = tabulate(tuples_list, headers=columns)
-print(table)
+# Табличное представление списка словарей
+dict_ip = host_range_ping(create_lst_ip(7))
+print(tabulate([dict_ip], headers="keys", tablefmt="grid"))

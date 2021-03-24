@@ -1,10 +1,6 @@
-import ipaddress
 import subprocess
+import ipaddress
 from pprint import pprint
-
-"""2. Написать функцию host_range_ping() для перебора ip-адресов из заданного диапазона.
- Меняться должен только последний октет каждого адреса.
-  По результатам проверки должно выводиться соответствующее сообщение."""
 
 
 def create_lst_ip(num):
@@ -29,11 +25,14 @@ ip = format(ipaddress.ip_address("192.168.1.1"))
 print(host_ping('google.com'))
 
 
+
+
 def host_range_ping(ip_addresses):
     result = {}
     for ip in ip_addresses:
         result[ip] = host_ping(ip)
     pprint(result)
+
 
 
 host_range_ping(create_lst_ip(7))
