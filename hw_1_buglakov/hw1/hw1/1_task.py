@@ -17,7 +17,7 @@ def create_lst_ip(num):
 
 
 def host_ping(ip_address):
-    with subprocess.Popen(["ping", "-c1", str(ip_address)]) as result:
+    with subprocess.Popen(["ping", "/n", "1", str(ip_address)]) as result:
         if result:
             print(ip_address, "Узел недоступен")
         else:
