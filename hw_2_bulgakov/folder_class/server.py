@@ -50,7 +50,6 @@ class ServerProp:
 
     def __set__(self, instance, value):
         print("__set__")
-        # if not isinstance(value, self.type):
         if not (1111 <= value <= 8888):
             raise ValueError("port должен быть от 1111 до 8888")
         setattr(instance, self.name, value)
