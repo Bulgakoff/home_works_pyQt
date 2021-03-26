@@ -59,33 +59,6 @@ class ServerProp:
         raise AttributeError("Невозможно удалить атрибут")
 
 
-# def __init__(self):
-#     self._values = WeakKeyDictionary()
-# def __init__(self, port):
-#     self._values = port
-#
-# def __get__(self, instance, instance_type):
-#     if instance is None:
-#         return self
-#     return self._values.get(instance, 0)
-# # def __get__(self, instance, instance_type):
-# #     if instance is None:
-# #         return self
-# #     return "*{}*".format(getattr(instance, self.name))
-# def __set__(self, instance, value):
-#     if not (1111 <= value <= 5555):
-#         raise ValueError("PORT должен быть от 1111 до 5555")
-#     self._values[instance] = value
-# # def __set__(self, instance, value):
-# #     if not (1111 <= value <= 5555):
-# #         raise ValueError("PORT должен быть от 1111 до 5555")
-# #     setattr(instance, self.name, value)
-#
-# def __delete__(self, instance):
-#     print("__delete__")
-#     raise AttributeError("Невозможно удалить атрибут")
-
-# =====================server====
 class Server(SocketClass):
     def __init__(self):
         super(Server, self).__init__()
