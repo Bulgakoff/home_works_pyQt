@@ -1,4 +1,6 @@
 import json
+from weakref import WeakKeyDictionary
+
 from Sockett import SocketClass
 import threading
 import time
@@ -25,7 +27,6 @@ PROBE = {
     "time": time.time(),
 }
 
-
 # =====================================
 """Реализовать дескриптор для класса серверного сокета,
  а в нем — проверку номера порта. Это должно быть целое число (>=0).
@@ -33,25 +34,57 @@ PROBE = {
   в отдельном классе. Его экземпляр добавить в пределах класса серверного сокета.
    Номер порта передается в экземпляр дескриптора при запуске сервера.
 """
+
+
 # =====================дискриптор====
 class ServerProp:
-    def __init__(self, port):
-        # Для данного подхода необходимо сформировать отдельное имя атрибута
-        self.PORT = port
-    def __get__(self, instance, instance_type):
-        if instance is None:
-            return self
-        return "*{}*".format(getattr(instance, self.PORT))
+    def __init__(self, name, type_name, default=None):
+        print("__init__")
+        self.name = "_" + name
+        self.type = type_name
+        self.default = default if default else type_name()
+
+    def __get__(self, instance, cls):
+        print("__get__")
+        return getattr(instance, self.name, self.default)
 
     def __set__(self, instance, value):
-        if not (1111 <= value <= 5555):
-            raise ValueError("PORT должен быть от 1111 до 5555")
-        setattr(instance, self.PORT, value)
-
+        print("__set__")
+        # if not isinstance(value, self.type):
+        if not (1111 <= value <= 8888):
+            raise ValueError("port должен быть от 1111 до 8888")
+        setattr(instance, self.name, value)
 
     def __delete__(self, instance):
         print("__delete__")
         raise AttributeError("Невозможно удалить атрибут")
+
+
+# def __init__(self):
+#     self._values = WeakKeyDictionary()
+# def __init__(self, port):
+#     self._values = port
+#
+# def __get__(self, instance, instance_type):
+#     if instance is None:
+#         return self
+#     return self._values.get(instance, 0)
+# # def __get__(self, instance, instance_type):
+# #     if instance is None:
+# #         return self
+# #     return "*{}*".format(getattr(instance, self.name))
+# def __set__(self, instance, value):
+#     if not (1111 <= value <= 5555):
+#         raise ValueError("PORT должен быть от 1111 до 5555")
+#     self._values[instance] = value
+# # def __set__(self, instance, value):
+# #     if not (1111 <= value <= 5555):
+# #         raise ValueError("PORT должен быть от 1111 до 5555")
+# #     setattr(instance, self.name, value)
+#
+# def __delete__(self, instance):
+#     print("__delete__")
+#     raise AttributeError("Невозможно удалить атрибут")
 
 # =====================server====
 class Server(SocketClass):
@@ -60,7 +93,8 @@ class Server(SocketClass):
         self.HOST = ""
         self.users_sockets = []
         self.to_monitor = []
-    qwe = ServerProp(1100)
+
+    port = ServerProp('port', int, 10000)
 
     def b_decode_str_foo(self, b_request_recvd):  # from b'' (json) to str
         return b_request_recvd.decode(self.ENCODDING)
@@ -74,7 +108,7 @@ class Server(SocketClass):
     # ================prepare=====================
     def set_up(self):
         self.to_monitor.append(self)
-        self.bind((self.HOST, self.PORT))
+        self.bind((self.HOST, self.port))
         self.listen(5)
         print('server is listening....')
         self.main_loop()
@@ -141,4 +175,4 @@ class Server(SocketClass):
 if __name__ == '__main__':
     server = Server()
     server.set_up()
-    # server.qwe.PORT=1110
+    # server.port=1111

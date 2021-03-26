@@ -9,7 +9,7 @@ class SocketClass(socket.socket):
 
         self.BUFF = 2048
         self.ENCODDING = 'utf-8'
-        self.PORT = 1111
+        self.PORT = 10000
         self.HOST = 'localhost'
 
     def send_data(self, data):
