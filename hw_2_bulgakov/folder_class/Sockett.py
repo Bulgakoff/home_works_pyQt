@@ -18,11 +18,7 @@ class SocketClass(socket.socket):
         raise NotImplementedError()
 
     def listen_socket(self,listened_sock=None):
-        """Если в класее наследнике не переопределится метод ,
-         то выбросится исключение"""
         raise NotImplementedError()
 
     def set_up(self):
-        """Если в класее наследнике
-         не переопределится метод , то выбросится исключение"""
         raise NotImplementedError()
