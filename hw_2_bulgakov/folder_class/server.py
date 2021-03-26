@@ -27,14 +27,40 @@ PROBE = {
 
 
 # =====================================
+"""Реализовать дескриптор для класса серверного сокета,
+ а в нем — проверку номера порта. Это должно быть целое число (>=0).
+  Значение порта по умолчанию равняется 7777. Дескриптор надо создать 
+  в отдельном классе. Его экземпляр добавить в пределах класса серверного сокета.
+   Номер порта передается в экземпляр дескриптора при запуске сервера.
+"""
+# =====================дискриптор====
+class ServerProp:
+    def __init__(self, port):
+        # Для данного подхода необходимо сформировать отдельное имя атрибута
+        self.PORT = port
+    def __get__(self, instance, instance_type):
+        if instance is None:
+            return self
+        return "*{}*".format(getattr(instance, self.PORT))
+
+    def __set__(self, instance, value):
+        if not (1111 <= value <= 5555):
+            raise ValueError("PORT должен быть от 1111 до 5555")
+        setattr(instance, self.PORT, value)
+
+
+    def __delete__(self, instance):
+        print("__delete__")
+        raise AttributeError("Невозможно удалить атрибут")
+
 # =====================server====
 class Server(SocketClass):
     def __init__(self):
         super(Server, self).__init__()
-
         self.HOST = ""
         self.users_sockets = []
         self.to_monitor = []
+    qwe = ServerProp(1100)
 
     def b_decode_str_foo(self, b_request_recvd):  # from b'' (json) to str
         return b_request_recvd.decode(self.ENCODDING)
@@ -115,3 +141,4 @@ class Server(SocketClass):
 if __name__ == '__main__':
     server = Server()
     server.set_up()
+    # server.qwe.PORT=1110
