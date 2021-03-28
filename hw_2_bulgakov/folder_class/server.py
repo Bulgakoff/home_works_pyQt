@@ -24,7 +24,6 @@ LIST_AUTH = [
 ]
 PROBE = {
     "action": "probe!!!",
-    "time": time.time(),
 }
 
 # =====================================
@@ -92,6 +91,7 @@ class Server(SocketClass):
     def listen_socket(self, listened_sock=None):
         """Принимает сообщения от клиента (слушает)
         затем отправка сообщений send_message()"""
+        time.sleep(2)
         print('listening user')
         request = listened_sock.recv(self.BUFF)
         if request:
@@ -103,13 +103,26 @@ class Server(SocketClass):
                     if 'response' in var_response and var_response['response'] == '200':
                         msg = str(var_response['alert'])
                         listened_sock.send(msg.encode(self.ENCODDING))
+                        print(f'server send {msg}')
+
+            elif 'action' in request_dict and request_dict['action'] == 'presence':
+                msg = self.py_dumps_str_foo(PROBE).encode(self.ENCODDING)
+                listened_sock.send(msg)
+                print('прилетел presence')
+                print(f'server send {msg.decode(self.ENCODDING)}')
+
+            elif 'action' in request_dict and request_dict['action'] == 'quit':
+                qwe = listened_sock.send('finish'.encode(self.ENCODDING))
+                print(f'прилетел quit {time.ctime()}')
+                print(f'server send {qwe} --"finish"')
 
             elif 'action' in request_dict and request_dict['action'] != 'authenticate':
                 for var_response in LIST_AUTH:
                     if 'response' in var_response and var_response['response'] == '402':
                         msg = str(var_response['error'])
                         listened_sock.send(msg.encode(self.ENCODDING))
-                print('ошибка auth')
+                        print('ошибка auth')
+                        print(f'server send {msg}')
 
             print(f'User sent {request_dict["action"]}')
             self.send_data(request)
