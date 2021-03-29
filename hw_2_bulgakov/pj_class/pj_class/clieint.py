@@ -1,9 +1,11 @@
 import json
-from Sockett import SocketClass
+from sockett import SocketClass
+# from pj_class.sockett import SocketClass
 import time
 from threading import Thread
 
-from DataCl import AnwQuit, Authenticate, Presence, Responce, ResponceError, Probe
+from DataCl import AnwQuit, Authenticate, Presence, \
+    Responce, ResponceError, Probe
 
 #
 # BUFF = 2048
@@ -16,19 +18,18 @@ quit = {
 }
 AUTH_CLIENT = {
     'action': 'authenticate',
-    # 'action': 'dfgdfg',
-    'time': time.ctime(),
+    'time': 'qwe',
     'user': {
-        'account_name': 'C0deMaver1ck',
-        'password': 'CorrectHorseBatterStaple'
+        'account_name': 'Alex',
+        'password': 'parol'
     }
 }
-PRESENTS_MSG = {  # сообщение о присутствии — presence
+PRESENTS_MSG = {
     'action': 'presence',
-    'time': time.ctime(),
+    'time': 'qwe',
     'type': 'status',
     'user': {
-        'account_name': 'C0deMaver1ck',
+        'account_name': 'Alex',
         'status': 'Yep, I am here!'
     }
 }
@@ -40,10 +41,19 @@ class Client(SocketClass):
 
         self._get_time_foo = time.ctime
 
-    def to_do_deserialize(self, msg_bytes):
-        msg_bytes_str = msg_bytes.decode(self.ENCODDING)
-        exit_msg_py = json.loads(msg_bytes_str)
-        return exit_msg_py
+    def py_dumps_str_foo(self, param_user):
+        return json.dumps(param_user)
+
+    def b_decode_str_foo(self, b_request_recvd):  # from b'' (json) to str
+        return b_request_recvd.decode(self.ENCODDING)
+
+    def str_loads_dict_foo(self, request_str):  # from str to  dict
+        return json.loads(request_str)
+
+    # def to_do_deserialize(self, msg_bytes):
+    #     msg_bytes_str = msg_bytes.decode(self.ENCODDING)
+    #     exit_msg_py = json.loads(msg_bytes_str)
+    #     return exit_msg_py
 
     def parse(self, parser_data_py):
         if "action" in parser_data_py:
@@ -131,8 +141,7 @@ class Client(SocketClass):
         send_data_thread = Thread(target=self.send_data, args=(AUTH_CLIENT,))
         send_data_thread.start()
 
-    def py_dumps_str_foo(self, param_user):
-        return json.dumps(param_user)
+
 
     def listen_socket(self, listened_sock=None):
         while True:
@@ -143,12 +152,13 @@ class Client(SocketClass):
             elif data.decode(self.ENCODDING) == 'OK!':
                 self.send_data(PRESENTS_MSG)
             # elif data.decode(self.ENCODDING) == '{"action": "probe!!!",}':
-            elif data.decode(self.ENCODDING) == 'finish':
+            elif data.decode(self.ENCODDING) == 'finished!!!':
                 print(f'server  send ========> FINISH')
                 time.sleep(6)
                 break
             else:
-                parser_data_py = self.to_do_deserialize(data)  # loads => тут dict_msg
+                parser_data_str = self.b_decode_str_foo(data)  # decode=> str
+                parser_data_py = self.str_loads_dict_foo(parser_data_str)  # loads =>  dict
                 msg_data_class = self.parse(parser_data_py)  # => dataclass
                 self.on_msg(msg_data_class)
 

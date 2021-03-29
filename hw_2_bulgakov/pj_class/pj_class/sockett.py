@@ -1,9 +1,11 @@
+import json
 import socket
+
 
 class SocketClass(socket.socket):
     def __init__(self):
-        super(SocketClass,self).__init__(
-             socket.AF_INET,
+        super(SocketClass, self).__init__(
+            socket.AF_INET,
             socket.SOCK_STREAM,
         )
 
@@ -17,8 +19,9 @@ class SocketClass(socket.socket):
          то выбросится исключение"""
         raise NotImplementedError()
 
-    def listen_socket(self,listened_sock=None):
+    def listen_socket(self, listened_sock=None):
         raise NotImplementedError()
 
     def set_up(self):
         raise NotImplementedError()
+

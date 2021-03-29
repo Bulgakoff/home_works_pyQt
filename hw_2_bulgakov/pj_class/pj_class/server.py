@@ -1,7 +1,8 @@
 import json
 from weakref import WeakKeyDictionary
 
-from Sockett import SocketClass
+# from sockett import SocketClass
+from pj_class.sockett import SocketClass
 import threading
 import time
 from select import select
@@ -35,13 +36,13 @@ PROBE = {
 """
 
 
-# =====================дискриптор====
+# =====================дескриптор====
 class ServerProp:
     def __init__(self, name, type_name, default=None):
         print("__init__")
-        self.name = "_" + name
-        self.type = type_name
-        self.default = default if default else type_name()
+        self.name = "_" + name  # '_port'
+        self.type = type_name  # class 'int'
+        self.default = default if default else 7777  # 7777
 
     def __get__(self, instance, cls):
         print("__get__")
@@ -49,9 +50,9 @@ class ServerProp:
 
     def __set__(self, instance, value):
         print("__set__")
-        if not (1111 <= value <= 8888):
+        if ( value > 8888):
             raise ValueError("port должен быть от 1111 до 8888")
-        setattr(instance, self.name, value)
+        setattr(instance, self.default, value)
 
     def __delete__(self, instance):
         print("__delete__")
@@ -65,7 +66,7 @@ class Server(SocketClass):
         self.users_sockets = []
         self.to_monitor = []
 
-    port = ServerProp('port', int, 10000)
+    port = ServerProp('port', int, 10000)  # port == 10000
 
     def b_decode_str_foo(self, b_request_recvd):  # from b'' (json) to str
         return b_request_recvd.decode(self.ENCODDING)
@@ -112,9 +113,9 @@ class Server(SocketClass):
                 print(f'server send {msg.decode(self.ENCODDING)}')
 
             elif 'action' in request_dict and request_dict['action'] == 'quit':
-                qwe = listened_sock.send('finish'.encode(self.ENCODDING))
+                qwe = listened_sock.send('finished!!!'.encode(self.ENCODDING))
                 print(f'прилетел quit {time.ctime()}')
-                print(f'server send {qwe} --"finish"')
+                print(f'server send {qwe} байт  == "finished!!!"')
 
             elif 'action' in request_dict and request_dict['action'] != 'authenticate':
                 for var_response in LIST_AUTH:
