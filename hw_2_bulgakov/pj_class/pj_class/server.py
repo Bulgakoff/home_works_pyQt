@@ -1,8 +1,10 @@
 import json
 from weakref import WeakKeyDictionary
 
-# from sockett import SocketClass
-from pj_class.sockett import SocketClass
+from icecream import ic
+
+from sockett import SocketClass
+# from pj_class.sockett import SocketClass
 import threading
 import time
 from select import select
@@ -38,25 +40,28 @@ PROBE = {
 
 # =====================дескриптор====
 class ServerProp:
-    def __init__(self, name, type_name, default=None):
-        print("__init__")
-        self.name = "_" + name  # '_port'
-        self.type = type_name  # class 'int'
-        self.default = default if default else 7777  # 7777
+    def __init__(self, default) -> None:
+        self._validate_value(default)
+        self._default = default
+        self._name = None
 
-    def __get__(self, instance, cls):
-        print("__get__")
-        return getattr(instance, self.name, self.default)
+    def __get__(self, instance, owner):
+        return getattr(instance, self._name, self._default)
 
     def __set__(self, instance, value):
-        print("__set__")
-        if ( value > 8888):
-            raise ValueError("port должен быть от 1111 до 8888")
-        setattr(instance, self.default, value)
+        self._validate_value(value)
+        setattr(instance, self._name, value)
+        # setattr(instance,self.default,value)
 
-    def __delete__(self, instance):
-        print("__delete__")
-        raise AttributeError("Невозможно удалить атрибут")
+    def __set_name__(self, owner, name):
+        self._name = f'__{name}'
+
+    @staticmethod
+    def _validate_value(val):
+        if not isinstance(val, int):
+            raise TypeError(f'It is not got int, got {type(val)}!')
+        if not 0 < val <= 65365:
+            raise ValueError('Invalid port value')
 
 
 class Server(SocketClass):
@@ -66,7 +71,7 @@ class Server(SocketClass):
         self.users_sockets = []
         self.to_monitor = []
 
-    port = ServerProp('port', int, 10000)  # port == 10000
+    port = ServerProp(10000)  # port == 10000
 
     def b_decode_str_foo(self, b_request_recvd):  # from b'' (json) to str
         return b_request_recvd.decode(self.ENCODDING)
