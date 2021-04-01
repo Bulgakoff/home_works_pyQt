@@ -76,35 +76,4 @@ if __name__ == '__main__':
     spam.add_login_info(user_login='ppp', user_password='888')
     spam.add_cli_history(connect_time=time.ctime(), address='198.244.50.444')
 
-# @dataclass
-# class ClientInfo:
-#     login: str
-#     password: str
-#
-#
-# @dataclass
-# class ClientHistory:
-#     connect_time: time
-#     address: str
-#
-#
-# class ClientStorage:
-#     def __init__(self, conn) -> None:
-#         self._conn = conn
-#
-#     def add(self, login, info):
-#         pass
-#
-#     def find(self, client_id):
-#         pass
-#
-#     def get(self, client_id):
-#         cursor = self._conn.cursor()
-#         cursor.execute("SELECT login, password FROM ...")
-#
-#         row = cursor.fetchone()
-#         return ClientInfo(login=row[0], password=row[1])
-#
-#
-# if __name__ == '__main__':
-#     inst_stor = ClientStorage(conn)
+
