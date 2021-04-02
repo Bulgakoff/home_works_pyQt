@@ -76,6 +76,6 @@ if __name__ == '__main__':
     spam = ClientStorage()
     spam.create_ClientInfo_or_ClientStorage()
     spam.add_login_info(user_login='ppp', user_password='888')
-    spam.add_cli_history(connect_time=time.ctime(), address='198.208.50.444', user_id=1)
+    spam.add_cli_history(connect_time=time.ctime(), address='198.208.50.444', user_id=100)
 
 
