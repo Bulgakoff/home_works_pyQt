@@ -20,7 +20,7 @@ class ClientStorage:
                                 id  INTEGER primary key,
                                 connect_time time NOT NULL,
                                 address TEXT NOT NULL,
-                                user_id INTEGER REFERENCES user_login_password(id)
+                                user_id INTEGER references user_login_password(id)
                             );
                 """
 
@@ -75,6 +75,6 @@ if __name__ == '__main__':
     spam = ClientStorage()
     spam.create_ClientInfo_or_ClientStorage()
     spam.add_login_info(user_login='ppp', user_password='888')
-    spam.add_cli_history(connect_time=time.ctime(), address='198.244.50.444')
+    spam.add_cli_history(connect_time=time.ctime(), address='198.208.50.444')
 
 
