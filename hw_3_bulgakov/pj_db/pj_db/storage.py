@@ -12,15 +12,16 @@ class ClientStorage:
                                 id  INTEGER primary key,
                                 user_login TEXT NOT NULL,
                                 user_password TEXT NOT NULL
-                            )
+                            );
                 """
     drop_cli_history = 'DROP TABLE IF EXISTS cli_history'
     create_cli_history = """
                             create table if not exists cli_history (
                                 id  INTEGER primary key,
                                 connect_time time NOT NULL,
-                                address TEXT NOT NULL
-                            )
+                                address TEXT NOT NULL,
+                                user_id INTEGER REFERENCES user_login_password(id)
+                            );
                 """
 
     insert_col_ulp = """insert into user_login_password (user_login, user_password)
