@@ -20,15 +20,16 @@ class ClientStorage:
                                 id  INTEGER primary key,
                                 connect_time time NOT NULL,
                                 address TEXT NOT NULL,
-                                user_id INTEGER references user_login_password(id)
+                                user_id INTEGER  NOT NULL,
+                                FOREIGN KEY(user_id) REFERENCES user_login_password(id)
                             );
                 """
 
     insert_col_ulp = """insert into user_login_password (user_login, user_password)
         VALUES (?, ?)"""
 
-    insert_col_cli_history = """insert into cli_history (connect_time, address)
-        VALUES (?, ?)"""
+    insert_col_cli_history = """insert into cli_history (connect_time, address, user_id)
+        VALUES (?, ?, ?)"""
     def get_conn(self):
         global connection
         if connection is None:
@@ -59,10 +60,10 @@ class ClientStorage:
         print()
         conn.commit()
 
-    def add_cli_history(self, connect_time: time, address: str):
+    def add_cli_history(self, connect_time: time, address: str, user_id: int):
         conn = self.get_conn()
         c = conn.cursor()
-        c.execute(self.insert_col_cli_history, (connect_time, address))
+        c.execute(self.insert_col_cli_history, (connect_time, address, user_id))
         c.execute("SELECT * FROM cli_history")
         for row in c:
             for value in row:
@@ -75,6 +76,6 @@ if __name__ == '__main__':
     spam = ClientStorage()
     spam.create_ClientInfo_or_ClientStorage()
     spam.add_login_info(user_login='ppp', user_password='888')
-    spam.add_cli_history(connect_time=time.ctime(), address='198.208.50.444')
+    spam.add_cli_history(connect_time=time.ctime(), address='198.208.50.444', user_id=1)
 
 
