@@ -24,6 +24,7 @@ class ClientStorage:
                                 FOREIGN KEY(user_id) REFERENCES user_login_password(id)
                             );
                 """
+    PRAGMA_qwe = """PRAGMA foreign_keys = ON"""
 
     insert_col_ulp = """insert into user_login_password (user_login, user_password)
         VALUES (?, ?)"""
@@ -43,9 +44,13 @@ class ClientStorage:
         if force:
             c.execute(self.drop_ulp)
             c.execute(self.drop_cli_history)
+
         else:
             c.execute(self.create_ulp)
+            # c.execute(self.PRAGMA_qwe)
+
             c.execute(self.create_cli_history)
+            c.execute(self.PRAGMA_qwe)
             # сохрнить изменения
             conn.commit()
 
@@ -75,7 +80,7 @@ class ClientStorage:
 if __name__ == '__main__':
     spam = ClientStorage()
     spam.create_ClientInfo_or_ClientStorage()
-    spam.add_login_info(user_login='ppp', user_password='888')
-    spam.add_cli_history(connect_time=time.ctime(), address='198.208.50.444', user_id=100)
+    spam.add_login_info(user_login='ddd', user_password='666')
+    spam.add_cli_history(connect_time=time.ctime(), address='198.208.50.55', user_id=10)
 
 
