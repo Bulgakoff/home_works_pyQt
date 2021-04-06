@@ -3,7 +3,7 @@ import time
 
 from icecream import ic
 from sqlalchemy import Column, ForeignKey, Integer, String, \
-    exists, and_, DateTime, event
+    exists, and_, DateTime, event, Table
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.future import Engine
 from sqlalchemy.orm import relationship, sessionmaker
@@ -18,6 +18,10 @@ def set_sqlite_pragma(dbapi_connection, connection_record):
     cursor.execute("PRAGMA foreign_keys=ON")
     cursor.close()
 
+# association_table = Table('association', Base.metadata,
+#     Column('host_id', Integer, ForeignKey('client_parent.id')),
+#     Column('user_id', Integer, ForeignKey('client_parent.id'))
+# )
 
 class Client(Base):
     __tablename__ = 'client_parent'
@@ -27,6 +31,8 @@ class Client(Base):
     password = Column(String(100))
 
     children = relationship("ClientHistory", back_populates="parent")
+    # host_user = relationship("Client")
+
 
     def __init__(self, login, password):
         self.login = login
