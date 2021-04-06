@@ -18,10 +18,10 @@ def set_sqlite_pragma(dbapi_connection, connection_record):
     cursor.execute("PRAGMA foreign_keys=ON")
     cursor.close()
 
-# association_table = Table('association', Base.metadata,
-#     Column('host_id', Integer, ForeignKey('client_parent.id')),
-#     Column('user_id', Integer, ForeignKey('client_parent.id'))
-# )
+node_to_node = Table("node_to_node", Base.metadata,
+    Column("left_node_id", Integer, ForeignKey("client_parent.id"), primary_key=True),
+    Column("right_node_id", Integer, ForeignKey("client_parent.id"), primary_key=True)
+)
 
 class Client(Base):
     __tablename__ = 'client_parent'
@@ -29,9 +29,17 @@ class Client(Base):
     id = Column(Integer, primary_key=True)
     login = Column(String(20), unique=True)
     password = Column(String(100))
-
     children = relationship("ClientHistory", back_populates="parent")
-    # host_user = relationship("Client")
+
+    right_nodes = relationship("Client",
+                               secondary=node_to_node,
+                               primaryjoin=id == node_to_node.c.left_node_id,
+                               secondaryjoin=id == node_to_node.c.right_node_id,
+                               backref="left_nodes"
+                               )
+
+
+
 
 
     def __init__(self, login, password):
