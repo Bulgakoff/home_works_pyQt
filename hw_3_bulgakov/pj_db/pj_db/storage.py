@@ -3,8 +3,20 @@ import time
 from dataclasses import dataclass
 
 from icecream import ic
+from sqlalchemy import event
+from sqlalchemy.future import Engine
+
+
+# @event.listens_for(Engine, "connect")
+# def set_sqlite_pragma(dbapi_connection, connection_record):
+#     c = dbapi_connection.cursor()
+#     c.execute("PRAGMA foreign_keys=ON")
+#     c.close()
+
 
 connection = None
+
+
 class ClientStorage:
     drop_ulp = 'DROP TABLE IF EXISTS user_login_password'
     create_ulp = """
@@ -31,6 +43,7 @@ class ClientStorage:
 
     insert_col_cli_history = """insert into cli_history (connect_time, address, user_id)
         VALUES (?, ?, ?)"""
+
     def get_conn(self):
         global connection
         if connection is None:
@@ -80,7 +93,6 @@ class ClientStorage:
 if __name__ == '__main__':
     spam = ClientStorage()
     spam.create_ClientInfo_or_ClientStorage()
-    spam.add_login_info(user_login='ddd', user_password='666')
-    spam.add_cli_history(connect_time=time.ctime(), address='198.208.50.55', user_id=10)
-
-
+    spam.add_login_info(user_login='ddd', user_password='77771')
+    spam.add_cli_history(connect_time=time.ctime(),
+                         address='196.248.50.111', user_id=111)

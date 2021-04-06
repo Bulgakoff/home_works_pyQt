@@ -1,30 +1,33 @@
 import sys
-# для настройки баз данных
 from icecream import ic
-from sqlalchemy import Column, ForeignKey, Integer, String, exists, and_, DateTime
-# для определения таблицы и модели
+from sqlalchemy import Column, ForeignKey, Integer, String, \
+    exists, and_, DateTime, event
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.declarative import declarative_base
-# для создания отношений между таблицами
+from sqlalchemy.future import Engine
 from sqlalchemy.orm import relationship, sessionmaker
-# для настроек
 from sqlalchemy import create_engine
+import time
+
+@event.listens_for(Engine, "connect")
+def set_sqlite_pragma(dbapi_connection, connection_record):
+    cursor = dbapi_connection.cursor()
+    cursor.execute("PRAGMA foreign_keys=ON")
+    cursor.close()
 
 # создание экземпляра declarative_base
 Base = declarative_base()
-import time
 
 # здесь добавим классы
 # мы создаем класс Book наследуя его из класса Base.
 class Client(Base):
-    __tablename__ = 'Client'
+    __tablename__ = 'client'
 
-    ClientId = Column(Integer, primary_key=True)
+    client_id = Column(Integer, primary_key=True)
     login = Column(String(20), unique=True)
     password = Column(String(100))
 
-    ClientHistory = relationship("ClientHistory", back_populates="Client")
-    # client_history_id = Column(Integer, ForeignKey('client_history.id'))
+    cli_history = relationship("ClientHistory", back_populates="client_id")
 
     def __repr__(self):
         return f"<Client(id = '{self.id}')," \
@@ -53,15 +56,15 @@ class ClientStorage:
 
 
 class ClientHistory(Base):
-    __tablename__ = 'ClientHistory'
+    __tablename__ = 'client_history'
 
     ClientHistoryId = Column(Integer, primary_key=True)
     ip_address = Column(String(4 + 4 + 4 + 3), unique=True)
-    connect_time = Column(String)
+    connect_time = Column(Integer)
     # connect_time = Column(DateTime)
 
-    ClientId = Column(Integer, ForeignKey('Client.ClientId'))
-    Client = relationship("Client", back_populates="ClientHistory")
+    client_id = Column(Integer, ForeignKey('client.client_id'))
+    client = relationship("Client", back_populates="cli_history")
 
 
 
@@ -81,13 +84,21 @@ if __name__ == '__main__':
     Base.metadata.create_all(engine)  # создает все
     # таблицы что обнаружил
     Session = sessionmaker(bind=engine)
+    session = Session()
 
-    with Session() as session:
+    parent_user = ClientStorage(session)
+    parent_user.client_add('foo', 'PaSsWord')
+    exists = parent_user.client_exists('foo', 'PaSsWord')
+
+    ic(exists)
+    session.commit()
+
+    # with Session() as session:
         # client_storage = ClientStorage(session)
         # client_storage.client_add('foo', 'PaSsWord')
         # exists = client_storage.client_exists('foo', 'PaSsWord')
 
         # ic(exists)
 
-        client_history_storage = ClientHistoryStorage(session)
-        client_history_storage.add_record(223,'198.1.25.10','2008-11-22')
+        # client_history_storage = ClientHistoryStorage(session)
+        # client_history_storage.add_record(1,'198.1.25.111',time.ctime())
