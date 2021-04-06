@@ -29,12 +29,12 @@ class Client(Base):
     children = relationship("ClientHistory", back_populates="parent")
 
     def __init__(self, login, password):
-        self._login = login
-        self._password = password
+        self.login = login
+        self.password = password
 
     def __repr__(self):
-        return f"Client (login = {self._login})," \
-               f" Client (password = {self._password})"
+        return f"Client (login = {self.login})," \
+               f" Client (password = {self.password})"
 
 
 class ClientHistory(Base):
@@ -47,13 +47,13 @@ class ClientHistory(Base):
     parent = relationship("Client", back_populates="children")
 
     def __init__(self, ip_address, parent_id, connect_time):
-        self._ip_address = ip_address
-        self._parent_id = parent_id
-        self._connect_time = connect_time
+        self.ip_address = ip_address
+        self.parent_id = parent_id
+        self.connect_time = connect_time
 
     def __repr__(self):
-        return f"<ClientHistory(_ip_address = '{self._ip_address}')," \
-               f" (_connect_time = {self._connect_time})"
+        return f"<ClientHistory(_ip_address = '{self.ip_address}')," \
+               f" (_connect_time = {self.connect_time})"
 
 
 if __name__ == '__main__':
@@ -63,21 +63,21 @@ if __name__ == '__main__':
     Session = sessionmaker(bind=engine)
     session = Session()
 
-    parent_user = Client('foo', 'PaSsWord')
+    parent_user = Client('fooq2', 'PaSsWord')
     ic("Classic Mapping. parent_user: ", parent_user)
 
-    child_table = ClientHistory(1, '198.1.25.111', time.ctime())
+    child_table = ClientHistory('198.1.25.1112', 1, time.ctime())
     ic("Classic Mapping. child_user: ", child_table)
 
     session.add(parent_user)
     session.add(child_table)
     session.add_all(
         [
-            Client('foo1', 'PaSsWord1'),
-            Client('foo2', 'PaSsWord2'),
-            Client('foo3', 'PaSsWord3'),
-            ClientHistory(1, '198.1.25.1121', time.ctime()),
-            ClientHistory(3, '198.1.25.1122', time.ctime()),
+            Client('foo112', 'PaSsWord1'),
+            Client('foo222', 'PaSsWord2'),
+            Client('foo332', 'PaSsWord3'),
+            ClientHistory('198.1.25.112112', 1, time.ctime()),
+            ClientHistory('198.1.25.112222', 2, time.ctime()),
         ]
     )
 
