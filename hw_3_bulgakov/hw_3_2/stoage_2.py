@@ -3,7 +3,7 @@ import time
 
 from icecream import ic
 from sqlalchemy import Column, ForeignKey, Integer, String, \
-    exists, and_, DateTime, event, Table
+    exists, and_, DateTime, event, Table, select
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.future import Engine
 from sqlalchemy.orm import relationship, sessionmaker
@@ -18,10 +18,12 @@ def set_sqlite_pragma(dbapi_connection, connection_record):
     cursor.execute("PRAGMA foreign_keys=ON")
     cursor.close()
 
+
 node_to_node = Table("node_to_node", Base.metadata,
-    Column("left_node_id", Integer, ForeignKey("client_parent.id"), primary_key=True),
-    Column("right_node_id", Integer, ForeignKey("client_parent.id"), primary_key=True)
-)
+                     Column("left_node_id", Integer, ForeignKey("client_parent.id"), primary_key=True),
+                     Column("right_node_id", Integer, ForeignKey("client_parent.id"), primary_key=True)
+                     )
+
 
 class Client(Base):
     __tablename__ = 'client_parent'
@@ -35,12 +37,8 @@ class Client(Base):
                                secondary=node_to_node,
                                primaryjoin=id == node_to_node.c.left_node_id,
                                secondaryjoin=id == node_to_node.c.right_node_id,
-                               backref="left_nodes"
+                               # backref="left_nodes"
                                )
-
-
-
-
 
     def __init__(self, login, password):
         self.login = login
@@ -48,7 +46,8 @@ class Client(Base):
 
     def __repr__(self):
         return f"Client (login = {self.login})," \
-               f" Client (password = {self.password})"
+               f" Client (password = {self.password})," \
+               f" right_nodes === > {self.right_nodes}"
 
 
 class ClientHistory(Base):
@@ -70,6 +69,7 @@ class ClientHistory(Base):
                f" (_connect_time = {self.connect_time})"
 
 
+
 if __name__ == '__main__':
     engine = create_engine('sqlite:///anketa_2.db')
     Base.metadata.create_all(engine)
@@ -77,25 +77,18 @@ if __name__ == '__main__':
     Session = sessionmaker(bind=engine)
     session = Session()
 
-    parent_user = Client('fooq2', 'PaSsWord')
-    ic("Classic Mapping. parent_user: ", parent_user)
+    # ==================================
+    u1, u2, u3, u4, ch5, ch6 = Client('fooq2', 'PaSsWord'), Client(login='foo112', password='PaSsWord1'), \
+                               Client('foo222', 'PaSsWord2'), Client('foo332', 'PaSsWord3'), \
+                               ClientHistory(ip_address='198.1.25.112112', parent_id=1, connect_time=time.ctime()), \
+                               ClientHistory('198.1.25.1e1312', 3, time.ctime())
+    u1.right_nodes = [u2, u1]
+    # u4.right_nodes = [u1, u3]
+    # u4.right_nodes.append(u4)
+    session.add_all([u1, u2, u3, u4, ch5, ch6])
 
-    child_table = ClientHistory('198.1.25.1112', 1, time.ctime())
-    ic("Classic Mapping. child_user: ", child_table)
-
-    session.add(parent_user)
-    session.add(child_table)
-    session.add_all(
-        [
-            Client('foo112', 'PaSsWord1'),
-            Client('foo222', 'PaSsWord2'),
-            Client('foo332', 'PaSsWord3'),
-            ClientHistory('198.1.25.112112', 1, time.ctime()),
-            ClientHistory('198.1.25.112222', 2, time.ctime()),
-        ]
-    )
-
-    q_user = session.query(Client).filter_by(login="foo") \
+    q_user = session.query(ClientHistory).filter_by(parent_id=1) \
         .first()
+    print()
     ic("Simple query:", q_user)
     session.commit()
