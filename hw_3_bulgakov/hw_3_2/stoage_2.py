@@ -37,7 +37,6 @@ class Client(Base):
                                secondary=node_to_node,
                                primaryjoin=id == node_to_node.c.left_node_id,
                                secondaryjoin=id == node_to_node.c.right_node_id,
-                               # backref="left_nodes"
                                )
 
     def __init__(self, login, password):
@@ -82,8 +81,8 @@ if __name__ == '__main__':
                                Client('foo222', 'PaSsWord2'), Client('foo332', 'PaSsWord3'), \
                                ClientHistory(ip_address='198.1.25.112112', parent_id=1, connect_time=time.ctime()), \
                                ClientHistory('198.1.25.1e1312', 3, time.ctime())
-    u1.right_nodes = [u2, u1]
-    # u4.right_nodes = [u1, u3]
+    u1.right_nodes = [u2, u4, u3]
+    u4.right_nodes = [u1]
     # u4.right_nodes.append(u4)
     session.add_all([u1, u2, u3, u4, ch5, ch6])
 
