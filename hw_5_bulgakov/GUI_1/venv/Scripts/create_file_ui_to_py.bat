@@ -1,0 +1,1 @@
+pyuic5.exe -x C:\PPPy\fir\DB_PyQT\lesson_5\classes_for_hw5\GUI_1\form.ui -o C:\PPPy\fir\DB_PyQT\lesson_5\classes_for_hw5\GUI_1\form.py
