@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>chat.stoage_sp1 module &#8212; chat  documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="chat.sockett module" href="chat.sockett.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-chat.stoage_sp1">
+<span id="chat-stoage-sp1-module"></span><h1>chat.stoage_sp1 module<a class="headerlink" href="#module-chat.stoage_sp1" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="chat.stoage_sp1.Client">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">chat.stoage_sp1.</span></code><code class="sig-name descname"><span class="pre">Client</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">login</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chat/stoage_sp1.html#Client"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chat.stoage_sp1.Client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.orm.decl_api.Base</span></code></p>
+<p>User Table</p>
+<dl class="py attribute">
+<dt id="chat.stoage_sp1.Client.children">
+<code class="sig-name descname"><span class="pre">children</span></code><a class="headerlink" href="#chat.stoage_sp1.Client.children" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="chat.stoage_sp1.Client.id">
+<code class="sig-name descname"><span class="pre">id</span></code><a class="headerlink" href="#chat.stoage_sp1.Client.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="chat.stoage_sp1.Client.login">
+<code class="sig-name descname"><span class="pre">login</span></code><a class="headerlink" href="#chat.stoage_sp1.Client.login" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="chat.stoage_sp1.Client.password">
+<code class="sig-name descname"><span class="pre">password</span></code><a class="headerlink" href="#chat.stoage_sp1.Client.password" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="chat.stoage_sp1.Client.right_nodes">
+<code class="sig-name descname"><span class="pre">right_nodes</span></code><a class="headerlink" href="#chat.stoage_sp1.Client.right_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="chat.stoage_sp1.ClientHistory">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">chat.stoage_sp1.</span></code><code class="sig-name descname"><span class="pre">ClientHistory</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ip_address</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_time</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chat/stoage_sp1.html#ClientHistory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chat.stoage_sp1.ClientHistory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.orm.decl_api.Base</span></code></p>
+<p>Table with connection history users</p>
+<dl class="py attribute">
+<dt id="chat.stoage_sp1.ClientHistory.connect_time">
+<code class="sig-name descname"><span class="pre">connect_time</span></code><a class="headerlink" href="#chat.stoage_sp1.ClientHistory.connect_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="chat.stoage_sp1.ClientHistory.id">
+<code class="sig-name descname"><span class="pre">id</span></code><a class="headerlink" href="#chat.stoage_sp1.ClientHistory.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="chat.stoage_sp1.ClientHistory.ip_address">
+<code class="sig-name descname"><span class="pre">ip_address</span></code><a class="headerlink" href="#chat.stoage_sp1.ClientHistory.ip_address" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="chat.stoage_sp1.ClientHistory.parent">
+<code class="sig-name descname"><span class="pre">parent</span></code><a class="headerlink" href="#chat.stoage_sp1.ClientHistory.parent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="chat.stoage_sp1.ClientHistory.parent_id">
+<code class="sig-name descname"><span class="pre">parent_id</span></code><a class="headerlink" href="#chat.stoage_sp1.ClientHistory.parent_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="chat.stoage_sp1.set_sqlite_pragma">
+<code class="sig-prename descclassname"><span class="pre">chat.stoage_sp1.</span></code><code class="sig-name descname"><span class="pre">set_sqlite_pragma</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dbapi_connection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connection_record</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chat/stoage_sp1.html#set_sqlite_pragma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chat.stoage_sp1.set_sqlite_pragma" title="Permalink to this definition">¶</a></dt>
+<dd><p>implements the operation of a foreign key</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">chat</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="chat.html">chat package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="chat.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="chat.DataCl.html">chat.DataCl module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chat.clieint.html">chat.clieint module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chat.server.html">chat.server module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chat.sockett.html">chat.sockett module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">chat.stoage_sp1 module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chat.html#module-chat">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="chat.html">chat package</a><ul>
+      <li>Previous: <a href="chat.sockett.html" title="previous chapter">chat.sockett module</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/chat.stoage_sp1.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
